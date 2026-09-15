@@ -1,6 +1,6 @@
 import React from 'react'
 
-function AdminSidebar() {
+function AdminPortal() {
   return (
     <div>
         <div className="h-full w-6 bg-slate-500">
@@ -16,4 +16,4 @@ function AdminSidebar() {
   )
 }
 
-export default AdminSidebar
+export default AdminPortal

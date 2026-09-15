@@ -1,4 +1,4 @@
-import LOGO from './assets/logo.jpeg'
+import LOGO from "../assets/logo.jpeg"
 import { useState } from 'react'
 import { HiMenu, HiX } from "react-icons/hi";
 function Navbar(){

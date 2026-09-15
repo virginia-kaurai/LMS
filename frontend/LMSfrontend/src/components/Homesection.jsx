@@ -1,5 +1,5 @@
 import React from 'react'
-import studentsImg from './assets/students.jpg'
+import studentsImg from '../assets/students.jpg'
 
 
 function Homesection() {
