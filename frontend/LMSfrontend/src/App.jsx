@@ -1,12 +1,7 @@
 import { useState } from 'react'
 import {Routes ,Routes,BrowserRouter} from react-router-dom
-import Navbar from "./components/navbar.jsx"
-import Homesection from "./components/Homesection.jsx"
-import Cards from "./components/cards.jsx"
-import Programs  from './components/programs.jsx'
-import Stats from './components/statistics.jsx'
-import Contact from "./components/contact.jsx"
-import Footer from "./components/Footer.jsx"
+import Homepage from "./Homepage.jsx"
+import 
 
 function App() {
  
@@ -15,9 +10,13 @@ function App() {
     <>
     <BrowserRouter>
      <Routes>
-      <Route></Route>
-      <Route></Route>
-      <Route></Route>
+      <Route path="/" element={<Homepage/>} />
+       <Route path="/Register" element={<Registrationpage/>} />
+        <Route path="/Login" element={<Loginpage/>} />
+        <Route path="/AdminPortal" element={<AdminPortal/>} />
+        <Route path="/StudentsPortal" element={<StudentsPortal/>} />
+        <Route path="/StaffPortal" element={<StaffPortal/>} />
+
      </Routes>
     
     </BrowserRouter>
