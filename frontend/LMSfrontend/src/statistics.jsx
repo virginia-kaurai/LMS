@@ -11,8 +11,8 @@ function Stats() {
     <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 p-6'>
       {stats.map((stat, index) => (
         <div key={index} className='bg-white rounded-lg shadow-md p-6 text-center'>
-          <h3 className='text-lg font-semibold text-gray-500'>{stat.label}</h3>
-          <p className='text-4xl font-bold text-blue-900 mt-2'>{stat.value}</p>
+          <h3 className='text-lg font-semibold text-slate-900'>{stat.label}</h3>
+          <p className='text-4xl font-bold text-amber-600 mt-2'>{stat.value}</p>
         </div>
       ))}
     </div>
