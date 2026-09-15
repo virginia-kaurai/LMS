@@ -2,10 +2,10 @@ import React from 'react'
 
 function Footer() {
   return (
-    <footer className='bg-blue-900 text-white'>
+    <footer className='bg-blue-950 text-white'>
       <div className='max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
 
-        {/* About */}
+        
         <div>
           <h2 className='text-2xl font-bold mb-4'>School Name</h2>
           <p className='text-gray-300 leading-relaxed'>
@@ -13,7 +13,7 @@ function Footer() {
           </p>
         </div>
 
-        {/* Quick Links */}
+        
         <div>
           <h3 className='text-lg font-semibold mb-4'>Quick Links</h3>
           <ul className='space-y-2'>
@@ -25,7 +25,7 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Contact Info */}
+       
         <div>
           <h3 className='text-lg font-semibold mb-4'>Contact Us</h3>
           <ul className='space-y-2 text-gray-300'>
@@ -35,7 +35,7 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Social */}
+     
         <div>
           <h3 className='text-lg font-semibold mb-4'>Follow Us</h3>
           <div className='flex gap-4'>

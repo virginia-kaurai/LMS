@@ -27,7 +27,7 @@ function Cards() {
           key={index}
           className='bg-white rounded-xl shadow-lg shadow-blue-200 p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200'
         >
-          <h1 className='text-2xl md:text-3xl font-bold text-black mb-3'>
+          <h1 className='text-2xl md:text-3xl font-bold text-amber-600 mb-3'>
             {card.title}
           </h1>
           <p className='text-gray-500 text-base md:text-lg leading-relaxed'>
