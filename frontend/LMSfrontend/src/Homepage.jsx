@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {Routes ,Routes,BrowserRouter} from react-router-dom
+
 import Navbar from "./components/navbar.jsx"
 import Homesection from "./components/Homesection.jsx"
 import Cards from "./components/cards.jsx"
@@ -13,14 +13,13 @@ function App() {
 
   return (
     <>
-    <BrowserRouter>
-     <Routes>
-      <Route></Route>
-      <Route></Route>
-      <Route></Route>
-     </Routes>
-    
-    </BrowserRouter>
+    <Navbar/>
+    <Homesection/>
+    <Cards/>
+    <Programs/>
+    <Stats/>
+    <Contact/>
+    <Footer/>
     </>
   )
 }
