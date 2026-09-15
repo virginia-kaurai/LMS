@@ -1,24 +1,26 @@
 import { useState } from 'react'
-import Navbar from "./navbar.jsx"
-import Homesection from "./Homesection.jsx"
-import Cards from "./cards.jsx"
-import Programs  from './programs.jsx'
-import Stats from './statistics.jsx'
-import Contact from "./contact.jsx"
-import Footer from "./Footer.jsx"
+import {Routes ,Routes,BrowserRouter} from react-router-dom
+import Navbar from "./components/navbar.jsx"
+import Homesection from "./components/Homesection.jsx"
+import Cards from "./components/cards.jsx"
+import Programs  from './components/programs.jsx'
+import Stats from './components/statistics.jsx'
+import Contact from "./components/contact.jsx"
+import Footer from "./components/Footer.jsx"
 
 function App() {
  
 
   return (
     <>
-    <Navbar/>
-    <Homesection/>
-    <Cards/>
-    <Programs/>
-    <Stats/>
-    <Contact/>
-    <Footer/>
+    <BrowserRouter>
+     <Routes>
+      <Route></Route>
+      <Route></Route>
+      <Route></Route>
+     </Routes>
+    
+    </BrowserRouter>
     </>
   )
 }
