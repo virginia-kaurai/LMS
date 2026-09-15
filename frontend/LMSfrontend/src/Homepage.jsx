@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { Outlet, Link } from "react-router-dom";
 import Navbar from "./components/navbar.jsx"
 import Homesection from "./components/Homesection.jsx"
 import Cards from "./components/cards.jsx"
@@ -12,15 +12,17 @@ function App() {
  
 
   return (
-    <>
+    <div className="">
+        <nav>
     <Navbar/>
-    <Homesection/>
-    <Cards/>
-    <Programs/>
-    <Stats/>
-    <Contact/>
+    <section id="home"><Homesection /></section>
+      <section id="cards"><Cards /></section>
+      <section id="programs"><Programs /></section>
+      <section id="stats"><Stats /></section>
+      <section id="contact"><Contact /></section>
     <Footer/>
-    </>
+    </nav>
+    </div>
   )
 }
 
