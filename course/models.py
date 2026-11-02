@@ -3,7 +3,8 @@ from django.db import models
 from django.db import models
 from django.conf import settings
 from academics.models import Programme
-from users.models import LecturerProfile
+from units.models import Units
+from django.db import models
 
 
 class Course(models.Model):
@@ -11,12 +12,13 @@ class Course(models.Model):
     name = models.CharField(max_length=200)
 
     lecturer = models.ForeignKey(
-        LecturerProfile,
+        "accounts.LecturerProfile",
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="courses"
     )
-    
+
     programme = models.ForeignKey(
         Programme,
         on_delete=models.CASCADE,
@@ -26,16 +28,16 @@ class Course(models.Model):
     description = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
+def __str__(self):
         return f"{self.code} - {self.name}"
+
     
 class Enrollment(models.Model):
 
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="enrollments"
+        related_name="course_enrollments"
     )
 
     course = models.ForeignKey(
@@ -50,14 +52,14 @@ class Enrollment(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["student", "course"],
-                name="unique_student_course"
+                name="unique_course_student_enrollment"
             )
         ]
         
 class CourseMaterial(models.Model):
 
-    course = models.ForeignKey(
-        Course,
+    unit = models.ForeignKey(
+        Units,
         on_delete=models.CASCADE,
         related_name="materials"
     )
@@ -65,7 +67,7 @@ class CourseMaterial(models.Model):
     lecturer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="uploaded_materials"
+        related_name="unit_uploaded_materials"
     )
 
     title = models.CharField(max_length=200)
