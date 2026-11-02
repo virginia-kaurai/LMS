@@ -66,7 +66,7 @@ class Submission(models.Model):
             )
         ]
 
-class Grade(models.Model):
+class AssessmentGrade(models.Model):
     submission = models.OneToOneField(
         Submission,
         on_delete=models.CASCADE,

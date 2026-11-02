@@ -61,7 +61,7 @@ function Navbar(){
 
 
      <button
-          className="justify-self-end p-8  text-3xl text-rose-500 lg:hidden "
+          className="justify-self-end p-8  text-3xl text-slate-900 lg:hidden "
           onClick={() => setisOpen(!isOpen)}
         >
           {isOpen ? <HiX /> : <HiMenu />}

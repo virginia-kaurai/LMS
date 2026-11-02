@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=200)),
                 ('file', models.FileField(upload_to='course_materials/')),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='materials', to='courses.course')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='materials', to='course.Course')),
                 ('lecturer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='uploaded_materials', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('enrolled_at', models.DateTimeField(auto_now_add=True)),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='courses.course')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='course.Course')),
                 ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to=settings.AUTH_USER_MODEL)),
             ],
             options={
