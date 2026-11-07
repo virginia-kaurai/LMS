@@ -52,3 +52,29 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"       
+
+
+
+class PromotionHistory(models.Model):
+    STATUS = [
+        ("promoted", "Promoted"),
+        ("repeated", "Repeated"),
+        ("graduated", "Graduated"),
+        ("pending", "Pending review"),
+    ]
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="promotions")
+    academic_year = models.CharField(max_length=9)  # e.g. "2025/2026"
+    from_programme = models.ForeignKey(Programme, on_delete=models.PROTECT, related_name="+")
+    to_programme = models.ForeignKey(Programme, null=True, blank=True,
+                                     on_delete=models.PROTECT, related_name="+")
+    average_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    pass_mark = models.DecimalField(max_digits=5, decimal_places=2)
+    status = models.CharField(max_length=10, choices=STATUS)
+    promoted_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["student", "academic_year"],
+                                    name="one_promotion_per_student_year")
+        ]
