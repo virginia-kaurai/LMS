@@ -1,32 +1,46 @@
-import { useState } from 'react'
-import {Route ,Routes,BrowserRouter} from "react-router-dom"
-import Homepage from "./Homepage.jsx"
-import Register from "./Register.jsx"
-import Login from "./Login.jsx"
-import AdminPortal from "./AdminPortal.jsx"
-import StudentsPortal from "./StudentsPortal.jsx"
-import StaffPortal from "./StaffPortal.jsx"
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Layout from './Layout'
+import Login from './Login'
+import Homepage from './Homepage'
+import * as Admin from './AdminPages'
+import * as Teacher from './TeachersPages'
+import * as Student from './StudentsPages'
 
-
-function App() {
- 
-
+export default function App() {
   return (
-    <>
-    <BrowserRouter>
-     <Routes>
-      <Route path="/" element={<Homepage/>} />
-       <Route path="/Register" element={<Register/>} />
-        <Route path="/Login" element={<Login/>} />
-        <Route path="/AdminPortal" element={<AdminPortal/>} />
-        <Route path="/StudentsPortal" element={<StudentsPortal/>} />
-        <Route path="/StaffPortal" element={<StaffPortal/>} />
+    <Routes>
+      <Route path='/' element={<Homepage />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
 
-     </Routes>
-    
-    </BrowserRouter>
-    </>
+      <Route path="/admin" element={<Layout role="admin" />}>
+        <Route index element={<Admin.Dashboard />} />
+        <Route path="students" element={<Admin.Students />} />
+        <Route path="teachers" element={<Admin.Teachers />} />
+        <Route path="classes" element={<Admin.Classes />} />
+        <Route path="subjects" element={<Admin.Subjects />} />
+        <Route path="exams" element={<Admin.Exams />} />
+        <Route path="results" element={<Admin.Results />} />
+        <Route path="fees" element={<Admin.Fees />} />
+        <Route path="settings" element={<Admin.Settings />} />
+      </Route>
+
+      <Route path="/teacher" element={<Layout role="teacher" />}>
+        <Route index element={<Teacher.Dashboard />} />
+        <Route path="classes" element={<Teacher.MyClasses />} />
+        <Route path="grades" element={<Teacher.Grades />} />
+        <Route path="attendance" element={<Teacher.Attendance />} />
+      </Route>
+
+      <Route path="/student" element={<Layout role="student" />}>
+        <Route index element={<Student.Dashboard />} />
+        <Route path="courses" element={<Student.MyCourses />} />
+        <Route path="results" element={<Student.Results />} />
+        <Route path="timetable" element={<Student.Timetable />} />
+        <Route path="fees" element={<Student.Fees />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   )
 }
-
-export default App

@@ -1,11 +1,12 @@
 import LOGO from "../assets/logo.jpeg"
 import { useState } from 'react'
 import { HiMenu, HiX } from "react-icons/hi";
+import {useNavigate} from "react-router-dom"
 function Navbar(){
     
 
   const [isOpen,setisOpen] = useState(false);
-
+  const navigate = useNavigate();
 
  return(
 < div className="grid grid-cols-2 lg:grid-cols-3  items-center px-6 py-6 md:px-32 bg-cream  mb-8">
@@ -48,7 +49,10 @@ function Navbar(){
 
 
   <div class="hidden lg:flex justify-self-end items-center gap-4 ">
-    <button class="text-charcoal font-medium px-4 py-2 hover:text-rose transition-colors font-monserat">
+    <button 
+    
+    onclick={() => navigate("/login")}
+    class="text-charcoal font-medium px-4 py-2 hover:text-rose transition-colors font-monserat" >
       Login
     </button>
     <button class=" text-charcoal font-monserat font-medium px-4 py-2 rounded-t-full rounded-b-full hover:border border-xl border-rose transition-colors">
