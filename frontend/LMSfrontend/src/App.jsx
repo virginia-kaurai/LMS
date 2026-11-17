@@ -4,7 +4,7 @@ import Layout from './Layout'
 import Login from './Login'
 import Homepage from './Homepage'
 import * as Admin from './AdminPages'
-import * as Teacher from './TeachersPages'
+import * as Teacher from './LecturersPages'
 import * as Student from './StudentsPages'
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
         <Route path="settings" element={<Admin.Settings />} />
       </Route>
 
-      <Route path="/teacher" element={<Layout role="teacher" />}>
+      <Route path="/lecturer" element={<Layout role="lecturer" />}>
         <Route index element={<Teacher.Dashboard />} />
         <Route path="classes" element={<Teacher.MyClasses />} />
         <Route path="grades" element={<Teacher.Grades />} />

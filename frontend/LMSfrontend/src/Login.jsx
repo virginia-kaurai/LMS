@@ -2,33 +2,63 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 
-/* DEMO ONLY: these accounts live in the browser, so they protect nothing.
-   In a real app, check the email and password on your server and return the user's role. */
-const users = [
-  { email: 'admin@school.com', password: 'admin123', role: 'admin', name: 'Daniel Mwangi' },
-  { email: 'teacher@school.com', password: 'teacher123', role: 'teacher', name: 'Faith Achieng' },
-  { email: 'student@school.com', password: 'student123', role: 'student', name: 'Amina Wekesa' },
-]
 
 const input = 'mt-1 w-full rounded-md border border-navy/20 px-3 py-2 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40'
 
 export default function Login() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
+  const [login_id, setLoginId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Already logged in? Go to your own dashboard.
-  const saved = JSON.parse(sessionStorage.getItem('user') || 'null')
-  if (saved) return <Navigate to={`/${saved.role}`} replace />
-
-  const submit = (e) => {
+  
+  const submit = async (e) => {
     e.preventDefault()
-    const user = users.find((u) => u.email === email.trim().toLowerCase() && u.password === password)
-    if (!user) return setError('Email or password is incorrect.')
+    setIsLoading(true)
+    setError('')
 
-    sessionStorage.setItem('user', JSON.stringify({ role: user.role, name: user.name }))
-    navigate(`/${user.role}`) // admin -> /admin, teacher -> /teacher, student -> /student
+    try {
+      const response = await fetch('http://127.0.0.1:8000/accounts/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ login_id, password }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.message || 'An error occurred while logging in.')
+        return;
+      }
+
+      if (data.role !== 'ADMIN' && data.role !== 'LECTURER' && data.role !== 'STUDENT') {
+        setError('You do not have permission to access this admin site')
+        return;
+      }
+
+      const routesByRole = {
+      'ADMIN': '/admin',
+      'LECTURER': '/lecturer',
+      'STUDENT': '/student',
+    }
+
+    const role = data.role?.toUpperCase(); 
+    const destination = routesByRole[role]
+
+    if(!destination) {
+      setError('You do not have permission to access this page.')
+      return;
+    }
+
+      navigate(destination)
+    } catch (error) {
+      setError('An error occurred while logging in.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -41,8 +71,8 @@ export default function Login() {
 
         <form onSubmit={submit} className="space-y-4 p-6">
           <label className="block text-sm text-slate-600">
-            Email
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={input} />
+            Login ID
+            <input type="text" required value={login_id} onChange={(e) => setLoginId(e.target.value)} className={input} />
           </label>
           <label className="block text-sm text-slate-600">
             Password
@@ -54,9 +84,8 @@ export default function Login() {
 
         <div className="border-t border-navy/10 bg-mist px-6 py-4 text-xs text-slate-600">
           <p>Demo logins:</p>
-          <p>admin@school.com / admin123</p>
-          <p>teacher@school.com / teacher123</p>
-          <p>student@school.com / student123</p>
+          <p>P101/4342G/23/ admin123</p>
+         
         </div>
       </div>
     </div>
