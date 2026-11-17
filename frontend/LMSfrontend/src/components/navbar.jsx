@@ -51,7 +51,7 @@ function Navbar(){
   <div class="hidden lg:flex justify-self-end items-center gap-4 ">
     <button 
     
-    onclick={() => navigate("/login")}
+    onClick={() => navigate("/login")}
     class="text-charcoal font-medium px-4 py-2 hover:text-rose transition-colors font-monserat" >
       Login
     </button>
