@@ -36,7 +36,7 @@ export default function Layout({ role }) {
   const user = JSON.parse(sessionStorage.getItem('user') || 'null')
 
   if (!user) return <Navigate to="/login" replace /> // not logged in
-  if (user.role !== role) return <Navigate to={`/${user.role}`} replace /> // wrong portal
+  if (user.role.toLowerCase() !== role) return <Navigate to={`/${user.role.toLowerCase()}`} replace /> // wrong portal
 
   const logout = () => {
     sessionStorage.removeItem('user')

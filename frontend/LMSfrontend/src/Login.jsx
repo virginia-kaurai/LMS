@@ -15,6 +15,7 @@ export default function Login() {
   
   const submit = async (e) => {
     e.preventDefault()
+
     setIsLoading(true)
     setError('')
 
@@ -39,23 +40,31 @@ export default function Login() {
         return;
       }
 
+
       const routesByRole = {
-      'ADMIN': '/admin',
-      'LECTURER': '/lecturer',
-      'STUDENT': '/student',
+      'admin': '/admin',
+      'lecturer': '/lecturer',
+      'student': '/student',
     }
 
-    const role = data.role?.toUpperCase(); 
+    const role = data.role?.toLowerCase(); 
     const destination = routesByRole[role]
 
     if(!destination) {
-      setError('You do not have permission to access this page.')
+      setError(`Login failed: Unknown role (${data.role}).`)
       return;
     }
 
+    sessionStorage.setItem('user',JSON.stringify({
+      id:data.user_id,
+      role:role,
+      name:login_id
+    }));
+
       navigate(destination)
+      
     } catch (error) {
-      setError('An error occurred while logging in.')
+      setError('Network error. Is the backend running?')
     } finally {
       setIsLoading(false)
     }

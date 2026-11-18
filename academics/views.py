@@ -100,3 +100,6 @@ class ExecutePromotionView(APIView):
             **counts,
             "processed": processed,
         })
+    
+        return 
+        Response({"error": "Profile type not recognized"}, status=status.HTTP_400_BAD_REQUEST)
