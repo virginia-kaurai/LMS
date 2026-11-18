@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-
+import api from './api';
 
 const input = 'mt-1 w-full rounded-md border border-navy/20 px-3 py-2 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40'
 
@@ -13,58 +13,51 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
 
   
-  const submit = async (e) => {
+    const submit = async (e) => {
     e.preventDefault()
-
     setIsLoading(true)
     setError('')
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/accounts/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ login_id, password }),
+      const response = await api.post('/accounts/login/', {
+        login_id,
+        password
       })
 
-      const data = await response.json()
+      // DEBUG: Let's see exactly what Django sent
+      console.log("Full Axios response:", response);
+      console.log("Response data:", response.data);
 
-      if (!response.ok) {
-        setError(data.message || 'An error occurred while logging in.')
-        return;
-      }
-
-      if (data.role !== 'ADMIN' && data.role !== 'LECTURER' && data.role !== 'STUDENT') {
-        setError('You do not have permission to access this admin site')
-        return;
-      }
-
+      // Protect against undefined data
+      const data = response.data || {};
+      
+      const role = data.role ? data.role.toLowerCase() : null; 
 
       const routesByRole = {
-      'admin': '/admin',
-      'lecturer': '/lecturer',
-      'student': '/student',
-    }
+        'admin': '/admin',
+        'lecturer': '/lecturer',
+        'student': '/student',
+      }
 
-    const role = data.role?.toLowerCase(); 
-    const destination = routesByRole[role]
+      const destination = routesByRole[role]
 
-    if(!destination) {
-      setError(`Login failed: Unknown role (${data.role}).`)
-      return;
-    }
+      if(!destination) {
+        setError(`Login failed: Unknown role (${data.role}).`)
+        return;
+      }
 
-    sessionStorage.setItem('user',JSON.stringify({
-      id:data.user_id,
-      role:role,
-      name:login_id
-    }));
+      sessionStorage.setItem('user', JSON.stringify({
+        id: data.user_id,
+        role: role,
+        name: login_id
+      }));
 
+      console.log("About to navigate to:", destination);
       navigate(destination)
-      
+
     } catch (error) {
-      setError('Network error. Is the backend running?')
+      console.error("FULL AXIOS ERROR:", error); // <--- This will show if it's a network error
+      setError(error.response?.data?.error || 'Network error. Is the backend running?')
     } finally {
       setIsLoading(false)
     }

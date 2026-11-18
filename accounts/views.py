@@ -83,11 +83,11 @@ class UserDetailView(APIView):
             "role": "ADMIN" if user.is_superuser else user.role,
         }
 
-        # 1. Handle superusers first (they don't need a profile)
+       
         if user.is_superuser:
             return Response(data, status=status.HTTP_200_OK)
             
-        # 2. Handle Students
+       
         if user.role == "STUDENT":
             try:
                 student_profile = user.student_profile
@@ -99,7 +99,7 @@ class UserDetailView(APIView):
             except Exception:
                 data.update({"programme": "N/A", "current_year": "N/A", "admission_year": "N/A"})
                 
-        # 3. Handle Lecturers (Changed from ADMIN to LECTURER)
+        
         elif user.role == "LECTURER":
             try:
                 lecturer_profile = user.lecturer_profile
@@ -109,11 +109,10 @@ class UserDetailView(APIView):
             except Exception:
                 data.update({"department": "N/A"}) 
                 
-        # 4. Handle normal Admins (if they have a different profile)
+       
         elif user.role == "ADMIN":
-            # If normal admins need specific data, add it here. 
-            # Otherwise, we just pass the base data.
+            
             pass 
                 
-        # 5. Fallback for any other unknown role
+       
         return Response(data, status=status.HTTP_200_OK)

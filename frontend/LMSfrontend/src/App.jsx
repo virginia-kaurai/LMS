@@ -2,6 +2,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import Login from './Login'
+import Register from './Register'
 import Homepage from './Homepage'
 import * as Admin from './AdminPages'
 import * as Teacher from './LecturersPages'
@@ -13,6 +14,7 @@ export default function App() {
       <Route path='/' element={<Homepage />} />
       
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       <Route path="/admin" element={<Layout role="admin" />}>
         <Route index element={<Admin.Dashboard />} />
