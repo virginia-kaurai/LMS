@@ -14,11 +14,11 @@ const menus = {
     ['/admin/fees', 'Fees'],
     ['/admin/settings', 'Settings'],
   ],
-  teacher: [
-    ['/teacher', 'Dashboard'],
-    ['/teacher/classes', 'My Classes'],
-    ['/teacher/grades', 'Grades'],
-    ['/teacher/attendance', 'Attendance'],
+  lecturer: [
+    ['/lecturer', 'Dashboard'],
+    ['/lecturer/classes', 'My Classes'],
+    ['/lecturer/grades', 'Grades'],
+    ['/lecturer/attendance', 'Attendance'],
   ],
   student: [
     ['/student', 'Dashboard'],
