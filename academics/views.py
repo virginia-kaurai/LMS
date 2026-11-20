@@ -8,7 +8,30 @@ from rest_framework.views import APIView
 from .models import Programme, PromotionHistory, Student
 
 
+def next_programme_for(current):
+    return (
+        Programme.objects
+        .filter(department=current.department, order__gt=current.order)
+        .order_by("order")
+        .first()
+    )
 
+
+
+class ProgrammeListView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        data = []
+        for p in Programme.objects.all():
+            nxt = next_programme_for(p)
+            data.append({
+                "id": p.id,
+                "name": p.name,
+                "code": p.code,
+                "next_programme": nxt.name if nxt else None,
+            })
+        return Response(data, status=status.HTTP_200_OK)    
 
 def calculate_student_average(student, academic_year):
     """Return the student's average as a Decimal, or None if no results.
@@ -20,13 +43,6 @@ def calculate_student_average(student, academic_year):
     """
     return None
 
-class ProgrammeListView(APIView):
-    permission_classes = [IsAdminUser]
-
-    def get(self, request):
-        programmes = Programme.objects.all()
-        data = [{"id": p.id, "name": p.name, "code": p.code} for p in programmes]
-        return Response(data, status=status.HTTP_200_OK)    
 
 class PreviewPromotionView(APIView):
     """Read-only. Mirrors ExecutePromotionView's rules but saves nothing."""

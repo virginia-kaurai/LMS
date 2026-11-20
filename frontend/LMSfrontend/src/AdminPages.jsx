@@ -164,7 +164,7 @@ export function Settings() {
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "http://127.0.0.1:8000/academics/programmelist/"; // your Django URL
+const API = "http://127.0.0.1:8000/academics"; // your Django URL
 
 export function Promotion() {
   const [programmes, setProgrammes] = useState([]);
@@ -180,7 +180,7 @@ export function Promotion() {
   // load programmes for the dropdown
   useEffect(() => {
     axios
-      .get(`${API}/programmes/`, config)
+      .get('http://127.0.0.1:8000/academics/programmelist/', config)
       .then((res) => {
         setProgrammes(res.data);
         if (res.data.length > 0) setProgrammeId(res.data[0].id);
