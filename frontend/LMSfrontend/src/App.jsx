@@ -8,6 +8,9 @@ import * as Admin from './AdminPages'
 import * as Teacher from './LecturersPages'
 import * as Student from './StudentsPages'
 
+
+
+
 export default function App() {
   return (
     <Routes>
@@ -25,6 +28,7 @@ export default function App() {
         <Route path="exams" element={<Admin.Exams />} />
         <Route path="results" element={<Admin.Results />} />
         <Route path="fees" element={<Admin.Fees />} />
+        <Route path="promotion" element={<Admin.Promotion />} />
         <Route path="settings" element={<Admin.Settings />} />
       </Route>
 

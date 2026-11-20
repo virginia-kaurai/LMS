@@ -12,6 +12,7 @@ const menus = {
     ['/admin/exams', 'Exams'],
     ['/admin/results', 'Results'],
     ['/admin/fees', 'Fees'],
+    ['/admin/promotion', 'Promotion'],
     ['/admin/settings', 'Settings'],
   ],
   lecturer: [

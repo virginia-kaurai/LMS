@@ -161,26 +161,65 @@ export function Settings() {
   )
 }
 
-export function Prommotion () {
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-  const [year, setYear] = useState('')
-  const [programmeId, setProgrammeId] = useState('')
-  const [programmes, setProgrammes] = useState([])
-  const [selected, setSelected] = useState(null)
-  const [preview, setPreview] = useState(null)
-  const [message, setMessage] = useState('')
+const API = "http://127.0.0.1:8000/academics/programmelist/"; // your Django URL
 
-//loads programmes for the drop down
+export function Promotion() {
+  const [programmes, setProgrammes] = useState([]);
+  const [year, setYear] = useState("2025/2026");
+  const [programmeId, setProgrammeId] = useState("");
+  const [preview, setPreview] = useState(null);
+  const [message, setMessage] = useState("");
 
-  useEfect(()=>{
-   axios.get('/api/programmes/',config).then((response)=>{
-    setProgrammes(response.data);
-    if (response.data.length > 0) {
-      setProgrammeId(response.data[0].id);
-    }
-   })
-  .catch((err) => console.log(err));
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+  };
+
+  // load programmes for the dropdown
+  useEffect(() => {
+    axios
+      .get(`${API}/programmes/`, config)
+      .then((res) => {
+        setProgrammes(res.data);
+        if (res.data.length > 0) setProgrammeId(res.data[0].id);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  const selected = programmes.find((p) => p.id == programmeId);
+
+  const previewPromotion = async () => {
+    setMessage("");
+    try {
+      const res = await axios.post(
+        `${API}/promotion/preview/`,
+        { academic_year: year, programme: programmeId },
+        config
+      );
+      setPreview(res.data);
+    } catch (err) {
+      setMessage(err.response?.data?.error || "Something went wrong");
+    }
+  };
+
+  const confirmPromotion = async () => {
+    if (!window.confirm("Confirm promotion? This cannot be undone.")) return;
+
+    try {
+      const res = await axios.post(
+        `${API}/promotion/execute/`,
+        { academic_year: year, programme: programmeId },
+        config
+      );
+      setMessage(res.data.message);
+      setPreview(null);
+    } catch (err) {
+      setMessage(err.response?.data?.error || "Something went wrong");
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow">
       <h1 className="text-xl font-bold mb-4">Student Promotion</h1>
@@ -257,5 +296,6 @@ export function Prommotion () {
           </button>
         </div>
       )}
-      </div>
-      );}
+    </div>
+  );
+}

@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from .models import Programme, PromotionHistory, Student
 
 
+
+
 def calculate_student_average(student, academic_year):
     """Return the student's average as a Decimal, or None if no results.
     EDIT THIS to read from your assesments app, for example:
@@ -17,6 +19,14 @@ def calculate_student_average(student, academic_year):
         return avg
     """
     return None
+
+class ProgrammeListView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        programmes = Programme.objects.all()
+        data = [{"id": p.id, "name": p.name, "code": p.code} for p in programmes]
+        return Response(data, status=status.HTTP_200_OK)    
 
 class PreviewPromotionView(APIView):
     """Read-only. Mirrors ExecutePromotionView's rules but saves nothing."""
