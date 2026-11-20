@@ -160,3 +160,102 @@ export function Settings() {
     </>
   )
 }
+
+export function Prommotion () {
+
+  const [year, setYear] = useState('')
+  const [programmeId, setProgrammeId] = useState('')
+  const [programmes, setProgrammes] = useState([])
+  const [selected, setSelected] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [message, setMessage] = useState('')
+
+//loads programmes for the drop down
+
+  useEfect(()=>{
+   axios.get('/api/programmes/',config).then((response)=>{
+    setProgrammes(response.data);
+    if (response.data.length > 0) {
+      setProgrammeId(response.data[0].id);
+    }
+   })
+  .catch((err) => console.log(err));
+  }, []);
+  return (
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow">
+      <h1 className="text-xl font-bold mb-4">Student Promotion</h1>
+
+      <label className="block text-xs font-semibold text-gray-500">ACADEMIC YEAR</label>
+      <input
+        className="w-full border rounded p-2 mb-3"
+        value={year}
+        onChange={(e) => {
+          setYear(e.target.value);
+          setPreview(null);
+        }}
+      />
+
+      <label className="block text-xs font-semibold text-gray-500">CURRENT PROGRAMME</label>
+      <select
+        className="w-full border rounded p-2 mb-3"
+        value={programmeId}
+        onChange={(e) => {
+          setProgrammeId(e.target.value);
+          setPreview(null);
+        }}
+      >
+        {programmes.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </select>
+
+      <label className="block text-xs font-semibold text-gray-500">NEXT PROGRAMME</label>
+      <input
+        className="w-full border rounded p-2 mb-4 bg-gray-100"
+        value={selected?.next_programme || "Graduation"}
+        readOnly
+      />
+
+      <button
+        onClick={previewPromotion}
+        className="w-full bg-gray-200 hover:bg-gray-300 rounded p-2 mb-4"
+      >
+        Preview Promotion
+      </button>
+
+      {message && <p className="text-green-700 mb-4">{message}</p>}
+
+      {preview && (
+        <div>
+          <h2 className="font-semibold mb-2">Promotion preview</h2>
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="bg-gray-100 rounded p-3">
+              <p className="text-xs text-gray-500">Promoted</p>
+              <p className="text-2xl font-bold">{preview.promoted}</p>
+            </div>
+            <div className="bg-gray-100 rounded p-3">
+              <p className="text-xs text-gray-500">Repeated</p>
+              <p className="text-2xl font-bold">{preview.repeated}</p>
+            </div>
+            <div className="bg-gray-100 rounded p-3">
+              <p className="text-xs text-gray-500">Graduated</p>
+              <p className="text-2xl font-bold">{preview.graduated}</p>
+            </div>
+            <div className="bg-gray-100 rounded p-3">
+              <p className="text-xs text-gray-500">Pending review</p>
+              <p className="text-2xl font-bold">{preview.pending}</p>
+            </div>
+          </div>
+
+          <button
+            onClick={confirmPromotion}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded p-2"
+          >
+            Confirm Promotion
+          </button>
+        </div>
+      )}
+      </div>
+      );}

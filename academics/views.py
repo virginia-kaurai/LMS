@@ -18,7 +18,50 @@ def calculate_student_average(student, academic_year):
     """
     return None
 
+class PreviewPromotionView(APIView):
+    """Read-only. Mirrors ExecutePromotionView's rules but saves nothing."""
+    permission_classes = [IsAdminUser]
 
+    def post(self, request):
+        academic_year = request.data.get("academic_year")
+        programme_id = request.data.get("programme")
+
+        if not academic_year or not programme_id:
+            return Response({"error": "academic_year and programme are required."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        current = Programme.objects.filter(pk=programme_id).first()
+        if not current:
+            return Response({"error": "Programme not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        next_programme = next_programme_for(current)
+        counts = {"promoted": 0, "repeated": 0, "graduated": 0, "pending": 0}
+
+        for student in Student.objects.filter(programme=current, is_graduated=False):
+            if PromotionHistory.objects.filter(
+                    student=student, academic_year=academic_year).exists():
+                continue  # ExecutePromotionView skips these too
+
+            average = calculate_student_average(student, academic_year)
+
+            if average is None:
+                decision = "pending"
+            elif average < current.passmark:
+                decision = "repeated"
+            elif next_programme is None:
+                decision = "graduated"
+            else:
+                decision = "promoted"
+
+            counts[decision] += 1
+
+        return Response({
+            "from": current.name,
+            "to": next_programme.name if next_programme else None,
+            **counts,
+        })
+    
 class ExecutePromotionView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -103,3 +146,7 @@ class ExecutePromotionView(APIView):
     
         return 
         Response({"error": "Profile type not recognized"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        
+                    
